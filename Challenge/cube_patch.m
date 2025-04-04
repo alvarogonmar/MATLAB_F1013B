@@ -34,3 +34,11 @@ faceColors = [
     0 1 1 % Cyan
 ];
 
+% Create figure and axes
+figure;
+ax = axes;
+hold on;
+
+% Draw cube faces with a single patch call
+patch('Vertices', vertices, 'Faces', faces, 'FaceVertexCData', faceColors, 'FaceColor', 'flat', 'EdgeColor', 'k');
+
