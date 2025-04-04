@@ -42,3 +42,9 @@ hold on;
 % Draw cube faces with a single patch call
 patch('Vertices', vertices, 'Faces', faces, 'FaceVertexCData', faceColors, 'FaceColor', 'flat', 'EdgeColor', 'k');
 
+% Set Axis properties
+axis equal;
+view(3);
+grid on;
+xlabel('X'); ylabel('Y'); zlabel('Z');
+title('3D Cube using patch');
