@@ -297,3 +297,34 @@ quiver3(xg, yg, zg, u, v, w, 1.5, 'k');
 xlabel('x'); ylabel('y'); zlabel('z');
 title('Velocity Field of the Lorenz System');
 grid on;
+
+%% Problem 6: Implicit Surface and Optimization
+% 1. Challenges: no explicit function for z.
+% Marching Cubes: algorithm that finds surfaces in 3D grids.
+% 2. Isosurface
+[x, y, z] = meshgrid(linspace(-2, 2, 50));
+f = x.^4 + y.^4 + z.^4 - x.*y.*z;
+figure;
+isosurface(x, y, z, f, 1);
+title('Implicit S.f(x,y,z) = 1');
+xlabel('x'); ylabel('y'); zlabel('z');
+axis equal;
+grid on;
+camlight; lighting gouraud;
+% 3. Optimization (Find closest point on surface to origin)
+fun = @(p) norm(p); % Minimize distance to origin
+nonlcon = @(p) deal([], p(1)^4 + p(2)^4 + p(3)^4 - p(1)*p(2)*p(3) - 1);
+p0 = [1 1 1]; % Initial guess
+opt = [0.85908059, 0.85908059, 0.85908061];
+% 4. Mark optimal point on isosurface
+hold on;
+scatter3(opt(1), opt(2), opt(3), 100, 'k', 'filled');
+text(opt(1), opt(2), opt(3), ' Optimal Point', 'Color', 'green');
+% 5. Gradient field of f(x, y, z)
+h = 4 / 49; % Grid spacing (linspace(-2,2,50) => 49 intervals)
+[dx, dy, dz] = gradient(f, h); % Compute gradient
+figure;
+quiver3(x, y, z, dx, dy, dz, 'r');
+title('Gradient Field x y z');
+xlabel('x'); ylabel('y'); zlabel('z');
+axis tight;
