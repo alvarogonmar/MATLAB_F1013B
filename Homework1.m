@@ -223,7 +223,3 @@ xlabel('x');
 ylabel('y');
 title('Divergence of the 2D Vector Field');
 grid on;
-
-% Part 6: Annotate vector fields in terms of unit vectors (manual)
-% This part requires you to write the vector fields manually on paper in 
-% terms of unit vectors i, j, k for 2D and 3D cases.
