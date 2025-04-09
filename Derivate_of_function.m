@@ -17,4 +17,4 @@ derivative = diff(f, x);
 g = matlabFunction (derivative);
 
 % print some results
-disp(['f(5): ' num2str(f(5)) ', g(5): ' num2str(g(5)) '*']);
+disp(['f(5): ' num2str(f(5)) ', g(5): ' num2str(g(5)) '.']);
