@@ -148,78 +148,152 @@ end
 
 %% Problem 3: Fields and Flow Visualization
 
-% Part 1: Compute the divergence and curl of the 2D vector field
-% The 2D vector field is F(x, y) = (-y, x)
-syms x y
-F = [-y, x]; % Vector field
+% 1. Divergence = 0, Curl = 2 (only z component)
 
-% Compute divergence: div(F) = ∂F1/∂x + ∂F2/∂y
-div_F = divergence(F, [x, y]);
-fprintf('Divergence of the field F(x, y): %s\n', div_F);
+% 2. Vector field
+[xg, yg] = meshgrid(-3:0.5:3);
+Fx = -yg;
+Fy = xg;
 
-% Compute curl: curl(F) = ∂F2/∂x - ∂F1/∂y (in 2D)
-curl_F = curl([F, 0], [x, y, 0]); % Extend to 3D for curl computation
-fprintf('Curl of the field F(x, y): %s\n', curl_F(3));
-
-% Part 2: Use meshgrid and quiver to plot the vector field
-% Define the grid for x and y
-[x_grid, y_grid] = meshgrid(-3:0.25:3, -3:0.25:3);
-
-% Evaluate the components of the vector field
-Fx = -y_grid; % F1 component
-Fy = x_grid;  % F2 component
-
-% Plot the vector field using quiver
 figure;
-quiver(x_grid, y_grid, Fx, Fy, 'b');
-xlabel('x');
-ylabel('y');
-title('2D Vector Field F(x, y) = (-y, x)');
+quiver(xg, yg, Fx, Fy, 'r', 'LineWidth', 1.5); % 'r' para rojo
 axis equal;
+xlabel('x'); ylabel('y');
+title('Vector Field F(x, y) = (-y, x)', 'FontWeight', 'bold');
 grid on;
 
-% Part 3: Overlay streamlines using plot
-% Define starting points for streamlines
-startX = -3:0.5:3; % x-coordinates of starting points
-startY = -3 * ones(size(startX)); % y-coordinates of starting points
-
-% Plot the streamlines
-hold on;
-streamline(x_grid, y_grid, Fx, Fy, startX, startY);
-legend('Vector Field', 'Streamlines');
-
-% Part 4: Extend the problem to 3D
-% Define a 3D vector field F(x, y, z)
-syms z
-F3D = [-y, x, z]; % Vector field in 3D
-fprintf('3D Vector Field: F(x, y, z) = %s\n', F3D);
-
-% Define the grid for x, y, and z
-[x3D, y3D, z3D] = meshgrid(-3:1:3, -3:1:3, -3:1:3);
-
-% Evaluate the components of the 3D vector field
-Fx3D = -y3D;
-Fy3D = x3D;
-Fz3D = z3D;
-
-% 3D quiver plot of the vector field
+% 3. Streamlines
 figure;
-quiver3(x3D, y3D, z3D, Fx3D, Fy3D, Fz3D, 'r');
+h = streamslice(xg, yg, Fx, Fy);
+set(h, 'Color', 'b');
+axis equal;
+xlabel('x'); ylabel('y');
+title('Streamlines of F(x, y)', 'FontWeight', 'bold');
+grid on;
+
+% 4. 3D extension
+[x3, y3, z3] = meshgrid(-2:1:2);
+Fx3 = -y3;
+Fy3 = x3;
+Fz3 = cos(z3);
+
+figure;
+quiver3(x3, y3, z3, Fx3, Fy3, Fz3, 0.5, 'k');
+xlabel('x'); ylabel('y'); zlabel('z');
+title('3D Vector Field F(x, y, z) = (-y, x, cos(z))', 'FontWeight', 'bold');
+grid on;
+
+
+%% Problem 4: 3D Electromagnetic Field Representation
+
+% Part 1: Compute the divergence and curl of E and B
+% Define the electromagnetic fields symbolically: 
+% E(x, y, z) = (x, -y, 2z), B(x, y, z) = (-y, x, 0)
+syms x y z
+E = [x, -y, 2*z]; % Electric field
+B = [-y, x, 0];   % Magnetic field
+
+% Compute divergence of E and B
+div_E = divergence(E, [x, y, z]);
+div_B = divergence(B, [x, y, z]);
+fprintf('Divergence of E(x, y, z): %s\n', div_E);
+fprintf('Divergence of B(x, y, z): %s\n', div_B);
+
+% Compute curl of E and B
+curl_E = curl(E, [x, y, z]);
+curl_B = curl(B, [x, y, z]);
+fprintf('Curl of E(x, y, z): %s\n', curl_E);
+fprintf('Curl of B(x, y, z): %s\n', curl_B);
+
+% Part 2: Visualize the fields using quiver3
+% Define the grid for x, y, z
+[x_grid, y_grid, z_grid] = meshgrid(-2:0.5:2, -2:0.5:2, -2:0.5:2);
+
+% Evaluate the components of E and B numerically
+Ex = x_grid;        % x-component of E
+Ey = -y_grid;       % y-component of E
+Ez = 2 * z_grid;    % z-component of E
+
+Bx = -y_grid;       % x-component of B
+By = x_grid;        % y-component of B
+Bz = zeros(size(z_grid)); % z-component of B
+
+% Plot the electric field E using quiver3
+figure;
+quiver3(x_grid, y_grid, z_grid, Ex, Ey, Ez, 'b');
 xlabel('x');
 ylabel('y');
 zlabel('z');
-title('3D Vector Field F(x, y, z) = (-y, x, z)');
+title('Electric Field E(x, y, z)');
 grid on;
 
-% Part 5: Draw divergence of the 2D vector field
-% Compute the divergence numerically
-div_F_numeric = Fx ./ x_grid + Fy ./ y_grid;
-
-% Plot the divergence as a scalar field
+% Plot the magnetic field B using quiver3
 figure;
-contourf(x_grid, y_grid, div_F_numeric, 20, 'LineColor', 'none');
-colorbar;
+quiver3(x_grid, y_grid, z_grid, Bx, By, Bz, 'r');
 xlabel('x');
 ylabel('y');
-title('Divergence of the 2D Vector Field');
+zlabel('z');
+title('Magnetic Field B(x, y, z)');
+grid on;
+
+% Part 3: Discuss the physical significance
+% Interpretation:
+% - The divergence of E represents the presence of charges. If div(E) ≠ 0, 
+%   it indicates the existence of a charge density at that point.
+% - The divergence of B is always zero (div(B) = 0), consistent with the
+%   fact that magnetic monopoles do not exist in classical electromagnetism.
+% - The curl of E describes how the electric field rotates or circulates
+%   around a point, which is related to the time-varying magnetic field.
+% - The curl of B describes how the magnetic field rotates around a point,
+%   which is related to the presence of electric currents or time-varying
+%   electric fields.
+
+%% Problem 5: Chaotic Lorenz Attractor in 3D
+
+% Parameters
+sigma = 10;
+rho = 28;
+beta = 8/3;
+
+% Time span and initial condition
+tspan = [0 50];
+x0 = [1 1 1];
+
+% Lorenz system as a function
+lorenz = @(t, x) [...
+    sigma * (x(2) - x(1)); ...
+    x(1) * (rho - x(3)) - x(2); ...
+    x(1) * x(2) - beta * x(3)];
+
+% Solve using ode45
+[t, X] = ode45(lorenz, tspan, x0);
+
+% Extract solutions
+x = X(:, 1);
+y = X(:, 2);
+z = X(:, 3);
+
+% Normalize time for color encoding
+c = rescale(t); % rescales t to [0, 1]
+
+% 3D trajectory plot with color encoding
+figure;
+scatter3(x, y, z, 15, c, 'filled');
+xlabel('x'); ylabel('y'); zlabel('z');
+title('Chaotic Lorenz Attractor in 3D');
+colorbar;
+colormap(jet);
+grid on;
+
+% Velocity field for overlay using quiver3
+[xg, yg, zg] = meshgrid(-20:5:20, -30:5:30, 0:5:50);
+u = sigma * (yg - xg);
+v = xg .* (rho - zg) - yg;
+w = xg .* yg - beta * zg;
+
+% Overlay quiver3 field
+figure;
+quiver3(xg, yg, zg, u, v, w, 1.5, 'k');
+xlabel('x'); ylabel('y'); zlabel('z');
+title('Velocity Field of the Lorenz System');
 grid on;
