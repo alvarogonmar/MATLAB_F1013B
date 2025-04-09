@@ -12,3 +12,7 @@ syms x;
 
 % with the internal MATLAB function we calculate the derivative with respect x
 derivative = diff(f, x);
+
+% we convert the previous result to an anonymous function so we can evaluate it
+g = matlabFunction (derivative);
+
