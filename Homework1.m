@@ -328,3 +328,60 @@ quiver3(x, y, z, dx, dy, dz, 'r');
 title('Gradient Field x y z');
 xlabel('x'); ylabel('y'); zlabel('z');
 axis tight;
+
+%% Problem 7: Navier-Stokes (Lid-Driven Cavity)
+% Domain and simulation parameters
+nx = 41;
+ny = 41;              % Number of points
+nt = 500;             % Number of time steps
+dt = 0.01;            % Time step size
+nu = 0.01;            % Viscosity
+x = linspace(0,1,nx);
+y = linspace(0,1,ny);
+[dx, dy] = deal(x(2)-x(1), y(2)-y(1));
+[u,v,p] = deal(zeros(ny,nx));  % ny rows, nx columns
+
+% Time loop to simulate the fluid evolution
+for n = 1:nt
+    un = u; vn = v;
+
+    % Update velocity u
+    u(2:end-1,2:end-1) = ...
+        un(2:end-1,2:end-1) ...
+        - dt/dx * un(2:end-1,2:end-1) .* (un(2:end-1,2:end-1) - un(2:end-1,1:end-2)) ...
+        - dt/dy * vn(2:end-1,2:end-1) .* (un(2:end-1,2:end-1) - un(1:end-2,2:end-1)) ...
+        + nu * (dt/dx^2 * (un(2:end-1,3:end) - 2*un(2:end-1,2:end-1) + un(2:end-1,1:end-2)) ...
+        + dt/dy^2 * (un(3:end,2:end-1) - 2*un(2:end-1,2:end-1) + un(1:end-2,2:end-1)));
+
+    % Update velocity v
+    v(2:end-1,2:end-1) = ...
+        vn(2:end-1,2:end-1) ...
+        - dt/dx * un(2:end-1,2:end-1) .* (vn(2:end-1,2:end-1) - vn(2:end-1,1:end-2)) ...
+        - dt/dy * vn(2:end-1,2:end-1) .* (vn(2:end-1,2:end-1) - vn(1:end-2,2:end-1)) ...
+        + nu * (dt/dx^2 * (vn(2:end-1,3:end) - 2*vn(2:end-1,2:end-1) + vn(2:end-1,1:end-2)) ...
+        + dt/dy^2 * (vn(3:end,2:end-1) - 2*vn(2:end-1,2:end-1) + vn(1:end-2,2:end-1)));
+
+    % Boundary conditions (no-slip walls and moving lid at the top)
+    u(1,:) = 0;
+    u(end,:) = 1;      % Lid moves to the right
+    u(:,1) = 0;
+    u(:,end) = 0;
+    v(1,:) = 0;
+    v(end,:) = 0;
+    v(:,1) = 0;
+    v(:,end) = 0;
+end
+
+% Meshgrid for visualization
+[X,Y] = meshgrid(x,y);
+
+% Velocity field visualization
+figure;
+quiver(X,Y,u,v, 'r');
+title('Velocity Field (quiver)');
+xlabel('x'); ylabel('y'); axis equal;
+
+figure;
+streamslice(X,Y,u,v, 'g');
+title('Streamlines (streamslice)');
+xlabel('x'); ylabel('y'); axis equal;
