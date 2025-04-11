@@ -1,34 +1,27 @@
 %%%%%%%%%%%%%%%%%%%%%%
-%Step0_Session3_F1013B
+%Step1_Session3_F1013B
 %%%%%%%%%%%%%%%%%%%%%%
 
-%This template code is very similar to the one you did in the previous 
-%challenge session, with some additional lines of code that  
-%will warranty that the visualized (plotted) E-field will look good, independently of us
-%using the superposition principle to add all contributions to the total
-%E-field at each point, or using the gradient of the electric potential to
-%calculate the total E-field (also at each point).
-
 %TO-DO%
-%Investigate, run, and comment each line, identify the new block(s) of code and
-%find out what they do (comment!), this will be part of your Deliverable No. 2.
+%Using the linspace command, and the new template code included here,
+%construct a "continuous" electric charge distribution, using a total
+%electric charge Q per electrode, and a number of electric charges Nq to
+%discretize it.
 
-
-% Limpieza de variables, ventana de comandos y figuras
 clear;      % Limpia todas las variables del espacio de trabajo.
 clc;        % Limpia la ventana de comandos.
 clf;        % Limpia todas las figuras abiertas.
 
 %----------------- PARÁMETROS INICIALES ------------------%
-Lp = 3.5;                     % Longitud del electrodo positivo en mm.
-Ln = 2.5;                     % Longitud del electrodo negativo en mm.
-t = 0.02;                     % Espesor adicional de los electrodos en mm.
-d = 0.4;                      % Distancia entre los electrodos en mm.
-p = 0.01;                     % Paso de discretización en mm.
+Lp = 3.5;                      % Longitud del electrodo positivo en mm.
+Ln = 2.5;                      % Longitud del electrodo negativo en mm.
+t = 0.02;                      % Espesor adicional de los electrodos en mm.
+d = 0.4;                       % Distancia entre los electrodos en mm.
+p = 0.01;                      % Paso de discretización en mm.
 
 % Características de los electrodos
 ke = 1/(4*pi*8.85*10^-12);     % Constante de Coulomb, utilizada para calcular campos eléctricos.
-Q = 1e-3;                      % Magnitud de la carga en Coulombs.
+Q = 1e-3;                      % Carga total por electrodo en Coulombs.
 Nq = 28;                       % Número de puntos discretos de carga.
 
 %----------------- DEFINICIÓN DEL DOMINIO ------------------%
@@ -70,8 +63,26 @@ facesN = [5 6 7 8 5];          % Conexión de vértices para el electrodo negati
 colorP = [0.95, 0, 0];         % Color del electrodo positivo (rojo).
 colorN = [0, 0, 0.7];          % Color del electrodo negativo (azul).
 
-%----------------- CONFIGURACIÓN DE LA GRÁFICA ------------------%
-hold on                        % Permite añadir varios elementos a la gráfica.
+%--------------------- DISTRIBUCIÓN DE CARGAS ------------------%
+% Cálculo del diferencial de carga
+dq = Q / Nq;                   % Magnitud de cada carga discreta.
+
+% Posiciones de las cargas positivas
+yp = linspace(-(1-p)*Lp/2, (1-p)*Lp/2, Nq); % Posiciones Y de las cargas positivas.
+xp(1:Nq) = -d/2 - t/2;                      % Posiciones X de las cargas positivas (constante).
+
+% Posiciones de las cargas negativas
+yn = linspace(-(1-p)*Ln/2, (1-p)*Ln/2, Nq); % Posiciones Y de las cargas negativas.
+xn(1:Nq) = d/2 + t/2;                       % Posiciones X de las cargas negativas (constante).
+
+%--------------------- VISUALIZACIÓN ------------------%
+% Verificación de posicionamiento de las cargas
+plot(xp, yp, '*', 'Color', colorP);         % Dibuja las posiciones de las cargas positivas.
+hold on
+plot(xn, yn, '*', 'Color', colorN);         % Dibuja las posiciones de las cargas negativas.
+
+% Configuración de la gráfica
+hold on
 axis([xmin xmax ymin ymax])    % Ajusta los límites de los ejes.
 xlabel('x position, mm')       % Etiqueta del eje x.
 ylabel('y position, mm')       % Etiqueta del eje y.
