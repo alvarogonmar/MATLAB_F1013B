@@ -20,111 +20,96 @@ clear;
 clc;
 clf;
 
-%-----------------?------------------%
-Lp=3.5;                      % 
-Ln=2.5;                      % 
-t=0.02;                      % 
-d=0.4;                       % 
-p=0.01;                      % 
+%----------------- PARÁMETROS INICIALES ------------------%
+Lp = 3.5;                      % Longitud del electrodo positivo en mm.
+Ln = 2.5;                      % Longitud del electrodo negativo en mm.
+t = 0.02;                      % Espesor adicional de los electrodos en mm.
+d = 0.4;                       % Distancia entre los electrodos en mm.
+p = 0.01;                      % Paso de discretización en mm.
 
-% Define the characteristics of the electrodes
-ke=1/(4*pi*8.85*10^-12);     % 
-Q=1e-3;                      % What is this?
-Nq=28;                       % And this?
+% Características de los electrodos
+ke = 1/(4*pi*8.85*10^-12);     % Constante de Coulomb, utilizada para calcular campos eléctricos.
+Q = 1e-3;                      % Carga total por electrodo en Coulombs.
+Nq = 28;                       % Número de puntos discretos de carga.
 
-%-----------------?------------------%
+%----------------- DEFINICIÓN DEL DOMINIO ------------------%
+xmin_original = -d/2 - 3*t;    % Límite inferior original del eje x.
+xmax_original = -xmin_original; % Límite superior original del eje x.
+xmin = -d/2 - 3*t;             % Límite ajustado del eje x.
+xmax = -xmin;                  % Límite ajustado del eje x.
+ymin = 2*(-Lp/2);              % Límite inferior del eje y.
+ymax = -ymin;                  % Límite superior del eje y.
 
-xmin_original=-d/2-3*t;  xmax_original=-xmin_original;  % 
-xmin=-d/2-3*t;  xmax=-xmin;                             % 
-ymin=2*(-Lp/2);   ymax=-ymin;                           % 
-
-%-----------------?------------------%
+% Ajustar los límites del dominio, si es necesario
 if ymin <= -1  
     if xmin >= -0.5 && xmax <= 0.5
-            xmin = -1.5;
-            xmax = -xmin;
+        xmin = -1.5;           % Ajusta el límite inferior del eje x a -1.5.
+        xmax = -xmin;          % Ajusta el límite superior del eje x a 1.5.
     end
 end
 
-%-----------------?------------------%
-Ny=30;  Nx=Ny;
-x=linspace(xmin, xmax, Nx); y=linspace(ymin, ymax, Ny);
+% Discretización del dominio
+Ny = 30;                       % Número de puntos en el eje y.
+Nx = Ny;                       % Número de puntos en el eje x (iguales a Ny).
+x = linspace(xmin, xmax, Nx);  % Discretización del eje x en Nx puntos.
+y = linspace(ymin, ymax, Ny);  % Discretización del eje y en Ny puntos.
 
-%-----------------?------------------%
+%----------------- DISTRIBUCIÓN DE CARGAS ------------------%
+% Cálculo del diferencial de carga
+dq = Q / Nq;                   % Magnitud de cada carga discreta.
 
-vertices2d=[[-d/2-t,Lp/2]    %1
-    [-d/2,Lp/2]              %2
-    [-d/2,-Lp/2]             %3  
-    [-d/2-t,-Lp/2]           %4
-    [d/2,Ln/2]               %5
-    [d/2+t,Ln/2]             %6  
-    [d/2+t,-Ln/2]            %7  
-    [d/2,-Ln/2]];            %8  
+% Posiciones de las cargas positivas
+yp = linspace(-(1-p)*Lp/2, (1-p)*Lp/2, Nq); % Posiciones Y de las cargas positivas.
+xp(1:Nq) = -d/2 - t/2;                      % Posiciones X de las cargas positivas (constante).
 
-%  
-facesP=[1 2 3 4 1];
-facesN=[5 6 7 8 5];
+% Posiciones de las cargas negativas
+yn = linspace(-(1-p)*Ln/2, (1-p)*Ln/2, Nq); % Posiciones Y de las cargas negativas.
+xn(1:Nq) = d/2 + t/2;                       % Posiciones X de las cargas negativas (constante).
 
-% 
-colorP=[0.95,0,0];           % 
-colorN=[0,0,0.7];            % 
-
-%---------------------Start positioning charges------------------%
-% Define a linear charge differential
-%dq=?/?;                     % Charge differential magnitude
-
-% Define the positions of the charges
-yp=linspace(-(1-p)*Lp/2,(1-p)*Lp/2,Nq); % Positive charges Y positions
-xp(1:Nq)=-d/2-t/2;                      % Positive charges X positions
-yn=                                     % Negative charges Y positions
-xn(?:?)=                                % Negative charges X positions
-
-%Uncomment and complete the following template code to find out if
-%you are placing you charges correctly. Additionally, play with some of the
-%parameters above, to make sure that the dicrete charges are distributed
-%between your plates. Finally, change the lenght of your plates, and see if
-%your code responds accordingly.
-
-%plot(<vector of positive charges X positions>, <vector of positive charges Y positions>,'*')
-%hold on
-%plot(?,?,'*') Same but for negative charges
-
-
-%-------Electric field calculation for every XY point (No gradient)-------%
-% % Initialize electric field components
- Ex = zeros(?, ?);  %Where do you want this component to be calculated?
- Ey = zeros(?, ?);
- 
-% % Calculate electric field components
-%Three nested for loops start here...
-
- for 
-     for
-         for
-            % here you must calculate distance vector or difference 
-            % here you must calculate the E-field components.
-
-         end
-     end
- end
-
-
-
-% 
+% Verificación gráfica de las posiciones de las cargas
+plot(xp, yp, '*', 'Color', [0.95, 0, 0]);   % Dibuja las posiciones de las cargas positivas.
 hold on;
-axis ([xmin xmax ymin ymax]);
-xlabel 'x position, mm';
-ylabel 'y position, mm';
-title 'Dielectrophoresis (No gradient)';
+plot(xn, yn, '*', 'Color', [0, 0, 0.7]);    % Dibuja las posiciones de las cargas negativas.
+
+%----------------- CÁLCULO DEL CAMPO ELÉCTRICO ------------------%
+% Inicializar componentes del campo eléctrico
+Ex = zeros(Nx, Ny); % Componente x del campo
+Ey = zeros(Nx, Ny); % Componente y del campo
+
+% Calcular componentes del campo eléctrico mediante tres bucles anidados
+for i = 1:Nx % Recorre las posiciones en el eje x
+    for j = 1:Ny % Recorre las posiciones en el eje y
+        for k = 1:Nq % Recorre cada carga discreta
+            % Contribución de las cargas positivas
+            rxp = x(i) - xp(k); % Diferencia en x
+            ryp = y(j) - yp(k); % Diferencia en y
+            rp = sqrt(rxp^2 + ryp^2)^3; % Distancia al cubo
+            Ex(i, j) = Ex(i, j) + ke * (dq) * rxp / rp; % Componente x
+            Ey(i, j) = Ey(i, j) + ke * (-dq) * ryp / rp; % Componente y
+
+            % Contribución de las cargas negativas
+            rxn = x(i) - xn(k); % Diferencia en x
+            ryn = y(j) - yn(k); % Diferencia en y
+            rn = sqrt(rxn^2 + ryn^2)^3; % Distancia al cubo
+            Ex(i, j) = Ex(i, j) + ke * dq * rxn / rn; % Componente x
+            Ey(i, j) = Ey(i, j) + ke * dq * ryn / rn; % Componente y
+        end
+    end
+end
+
+%----------------- VISUALIZACIÓN DEL CAMPO ELÉCTRICO ------------------%
+hold on;
+axis([xmin xmax ymin ymax]);
+xlabel('x position, mm');
+ylabel('y position, mm');
+title('Dielectrophoresis (No gradient)');
 grid on;
 
-%Use here the streamslice command to plot you calculated E-field...
-streamslice(?,?,?,?,2);  % Electric field lines without gradient
-                         % Use Ex' and Ey' instead of Ex and Ey
-                         % Why do we need Ex' and Ey' instead of Ex and Ey?
+% Visualizar líneas de campo eléctrico usando "streamslice"
+streamslice(x, y, Ex', Ey', 2); % Las líneas de campo eléctrico
+                                % Nota: Se transponen Ex y Ey para ajustarse
+                                % al formato esperado por streamslice.
 
-% 
-patch('Faces',facesP,'Vertices',vertices2d,'FaceColor',colorP);
-patch('Faces',facesN,'Vertices',vertices2d,'FaceColor',colorN);
-
-
+% Dibujo de los electrodos
+patch('Faces', facesP, 'Vertices', vertices2d, 'FaceColor', [0.95, 0, 0]); % Dibuja el electrodo positivo
+patch('Faces', facesN, 'Vertices', vertices2d, 'FaceColor', [0, 0, 0.7]); % Dibuja el electrodo negativo
