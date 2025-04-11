@@ -41,3 +41,5 @@ grid on;
 %% Part 2
 % Define the grid
 [x, y] = meshgrid(-5:0.1:5, -5:0.1:5);
+
+% Define a scalar field, for example: f(x, y)
