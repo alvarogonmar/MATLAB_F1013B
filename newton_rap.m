@@ -6,7 +6,7 @@ counter = 0;
 
 while True
     counter = counter + 1;
-    x_new = x0 - matlabFunction(f)/matlabFunction(x)
+    x_new = x0 - (f(x0)/g(x0));
     if
         break
     end
