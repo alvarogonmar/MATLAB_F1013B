@@ -12,3 +12,5 @@ tol = 0.5;
 if f(a) * f(b) >= 0
     error('Function must have opposite signs at a and b');
 end
+
+counter = 0
