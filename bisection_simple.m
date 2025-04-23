@@ -13,9 +13,9 @@ if f(a) * f(b) >= 0
     error('Function must have opposite signs at a and b');
 end
 
-counter = 0
+counter = 0;
 while true
-    m = (a + b)/2 %midpoint
+    m = (a + b)/2; %midpoint
     if f(m) == 0
         break;
     elseif f(a) * f(m) > 0
