@@ -29,3 +29,9 @@ while true
     counter = counter+1;
     if error < tol
         break;
+    end
+end
+
+% root = (a+b)/2
+% fprintf('Root found at x = %.10f after %d iterations\n"
+disp(root)
