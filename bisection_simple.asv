@@ -20,11 +20,4 @@ while true
         break;
     elseif f(a) * f(m) > 0
         a = m;
-    else
-        b = m;
-    end
-    m = (a+b)/2;
-    root = m;
-    error = abs(b-a)/2;
-    counter = counter+1;
     
