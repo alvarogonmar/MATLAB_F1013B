@@ -27,4 +27,5 @@ while true
     root = m;
     error = abs(b-a)/2;
     counter = counter+1;
-    
+    if error < tol
+        break;
