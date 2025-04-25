@@ -115,7 +115,11 @@ plot(xn,yn,'*') % Same but for negative charges
               ryp = yp(k);
               rxn = xn(k);
               ryn = yn(k);
-              
+
+              r3psep = (sqrt((rx-rxp)^2 + (ry-ryp)^2))^3; % Distancia a la carga positiva
+              r3nsep = (sqrt((rx - rxn)^2 + (ry - ryn)^2))^3; % Distancia a la carga negativa
+
+              Ex(i, j) = Ex(i, j) + ke * dq * (rx - rxp) / r3nsep;% Componente x de E
           end
       end
   end

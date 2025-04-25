@@ -109,7 +109,16 @@ plot(xn,yn,'*') % Same but for negative charges
       for j = 1:Ny % Loop for y coordinate
           for k = 1:Nq % Loop for every charge
 
-              rx = 
+              rx = x(i);
+              ry = y(j);
+              rxp = xp(k); % Posiciones de x de las cargas positivas
+              ryp = yp(k);
+              rxn = xn(k);
+              ryn = yn(k);
+
+              r3psep = (sqrt((rx-rxp)^2 + (ry-ryp)^2))^3; % Distancia a la carga positiva
+              r3nsep = (sqrt((rx - rxn)^2 + (ry - ryn)^2))^3; % Distancia a la carga negativa
+              
           end
       end
   end
