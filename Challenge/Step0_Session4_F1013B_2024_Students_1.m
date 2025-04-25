@@ -241,6 +241,10 @@ for ery = 1:Ne
         ye = y(Ny - i);
         i = i + 1;
         disp(ye)
+
+        for k = 1:Nq
+            disp(ye);
+        end
     end
    
 end
@@ -252,3 +256,4 @@ end
 % (5)Finally, inside this while open another for loop that will run from charge 1 all the way to the last 
 % charge in the plates (electrodes).
 
+%% Step 2
