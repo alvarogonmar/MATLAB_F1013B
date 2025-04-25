@@ -125,6 +125,9 @@ plot(xn,yn,'*') % Same but for negative charges
                
                 
               % Electric Potencial
+              rpsep = (sqrt((rx-rxp)^2 + (ry-ryp)^2)); % Distancia a la carga positiva
+              rnsep = (sqrt((rx - rxn)^2 + (ry - ryn)^2));
+              V(i, j) = V(i, j) + ke * dq * (1/rpsep - 1/rnsep);
           end
       end
   end
@@ -139,7 +142,12 @@ plot(xn,yn,'*') % Same but for negative charges
 % % Calculate the electric field components using the gradient of potential
 % % here
 % 
-% [?, ?] = gradient(V'); %Why do we need V' instead of V? 
+[ExP, EyP] = gradient(V'); % Why do we need V' instead of V?
+% Se usa la traspuesta V' porque en MATLAB las filas de una matriz representan el eje (y) 
+% y las columnas el eje (x), lo cual es opuesto a la convención física donde columnas 
+% corresponden a (x) y filas a (y).
+ExP = -ExP;
+EyP = -EyP;
 % 
 % % 
 % hold on
