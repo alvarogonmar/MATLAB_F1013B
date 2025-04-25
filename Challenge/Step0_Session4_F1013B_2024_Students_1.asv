@@ -105,9 +105,11 @@ plot(xn,yn,'*') % Same but for negative charges
 % % % Calculate electric field components
 % %Three nested for loops start here...
  
-  for i = 1
-      for j = 1
-          for k =1
+  for i = 1:Nx % Loop for x coordinate
+      for j = 1:Ny % Loop for y coordinate
+          for k = 1:Nq % Loop for every charge
+
+              rx = 
           end
       end
   end

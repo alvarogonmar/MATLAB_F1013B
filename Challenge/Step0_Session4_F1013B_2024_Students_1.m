@@ -108,6 +108,14 @@ plot(xn,yn,'*') % Same but for negative charges
   for i = 1:Nx % Loop for x coordinate
       for j = 1:Ny % Loop for y coordinate
           for k = 1:Nq % Loop for every charge
+
+              rx = x(i);
+              ry = y(j);
+              rxp = xp(k); % Posiciones de x de las cargas positivas
+              ryp = yp(k);
+              rxn = xn(k);
+              ryn = yn(k);
+              
           end
       end
   end
