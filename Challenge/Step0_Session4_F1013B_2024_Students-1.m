@@ -24,16 +24,16 @@ clc;
 clf;
 
 %-----------------?------------------%
-Lp=3.5;                      % 
-Ln=2.5;                      % 
-t=0.02;                      % 
-d=0.4;                       % 
-p=0.01;                      % 
+Lp=3.5;                      % Longitud placa positiva
+Ln=2.5;                      % Longitud placa negativa
+t=0.02;                      % Grosor de los electrones
+d=0.4;                       % Distancia entre placas
+p=0.01;                      % Distancia minima entre las cargas
 
 % Define the characteristics of the electrodes
-ke=1/(4*pi*8.85*10^-12);     % 
-Q=1e-3;                      % What is this?
-Nq=28;                       % And this?
+ke=1/(4*pi*8.85*10^-12);     % Constante del campo electrico
+Q=1e-3;                      % Carga electrica en Coulombs
+Nq=28;                       % Numero de cargas
 
 %-----------------?------------------%
 
