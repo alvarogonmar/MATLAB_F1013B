@@ -74,10 +74,10 @@ colorN=[0,0,0.7];            % Color azul
 
 %---------------------Start positioning charges------------------%
 % Define a linear charge differential
-%dq=?/?;                     % Charge differential magnitude
+dq=Q/Nq;                     % Charge differential magnitude
 
 % Define the positions of the charges
-yp=linspace(-(1-p)*Lp/2,(1-p)*Lp/2,Nq); % Positive charges Y positions
+yp=linspace(-(1-p)*Lp/2,(1-p)*Lp/2,Nq); % Positive charges Y positions, colorcar las cargas sobre las placas
 xp(1:Nq)=-d/2-t/2;                      % Positive charges X positions
 yn=                                     % Negative charges Y positions
 xn(?:?)=                                % Negative charges X positions
