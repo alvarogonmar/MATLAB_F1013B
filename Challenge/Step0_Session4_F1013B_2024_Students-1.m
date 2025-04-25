@@ -41,7 +41,7 @@ xmin_original=-d/2-3*t;  xmax_original=-xmin_original;  %
 xmin=-d/2-3*t;  xmax=-xmin;                             % 
 ymin=2*(-Lp/2);   ymax=-ymin;                           % 
 
-%-----------------?------------------%
+%-----------------Asegurar que las dimenciones que el area de trabajo sea el adecuado------------------%
 if ymin <= -1  
     if xmin >= -0.5 && xmax <= 0.5
             xmin = -1.5;
@@ -49,28 +49,28 @@ if ymin <= -1
     end
 end
 
-%-----------------?------------------%
+%---------------% Se define una malla de puntos en el espacio 2D --------------------%
 Ny=30;  Nx=Ny;
-x=linspace(xmin, xmax, Nx); y=linspace(ymin, ymax, Ny);
+x=linspace(xmin, xmax, Nx); y=linspace(ymin, ymax, Ny); % Dibujar puntos en x y y
 
-%-----------------?------------------%
+%-----------------Parches------------------%
 
-vertices2d=[[-d/2-t,Lp/2]    %1
-    [-d/2,Lp/2]              %2
-    [-d/2,-Lp/2]             %3  
-    [-d/2-t,-Lp/2]           %4
-    [d/2,Ln/2]               %5
-    [d/2+t,Ln/2]             %6  
-    [d/2+t,-Ln/2]            %7  
-    [d/2,-Ln/2]];            %8  
+vertices2d=[[-d/2-t,Lp/2]    %1 Vertice 1
+    [-d/2,Lp/2]              %2 Vertice 2
+    [-d/2,-Lp/2]             %3  Vertice 3
+    [-d/2-t,-Lp/2]           %4 Vertice 4
+    [d/2,Ln/2]               %5 Vertice 5
+    [d/2+t,Ln/2]             %6  Vertice 6
+    [d/2+t,-Ln/2]            %7  Vertice 7
+    [d/2,-Ln/2]];            %8  Vertice 8
 
-%  
+%  Las caras del cubo para conectar los vertices
 facesP=[1 2 3 4 1];
 facesN=[5 6 7 8 5];
 
 % 
-colorP=[0.95,0,0];           % 
-colorN=[0,0,0.7];            % 
+colorP=[0.95,0,0];           % Ponerle colores a las caras color rojo
+colorN=[0,0,0.7];            % Color azul
 
 %---------------------Start positioning charges------------------%
 % Define a linear charge differential
