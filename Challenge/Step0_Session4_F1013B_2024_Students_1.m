@@ -196,3 +196,25 @@ shading interp;
 colorbar;
 patch('Faces',facesP,'Vertices',vertices2d,'FaceColor',colorP);
 patch('Faces',facesN,'Vertices',vertices2d,'FaceColor',colorN);
+
+
+%% Step 1
+
+%Now, you will work in configuring the Erythrocytes we are to simulate.
+
+%TO-DO%
+%(1) Go to bottom section of the code labelled "Erythrocytes configuration" and do
+% as suggested there.     
+
+%(2) Go to bottom section of the code labelled "Erythrocytes displacement" and do
+% as suggested there.
+
+%(3) Open a for loop that will run over the total number of erythrocytes (Ne) defined by the user, 
+% and within it initialize the erythrocyte position (xe, ye) and velocities (Vx , Vy)... Think about it! :)
+ 
+% (4) Next, inside this loop and after the initialization referred above, use (define) a while that will 
+% run from the upmost Y-coordinate of the erythrocyte, say "ye", to the bottom-most (down-most)  
+% Y-coordinate of the erythrocyte (say "ye>ymin"). 
+% 
+% (5)Finally, inside this while open another for loop that will run from charge 1 all the way to the last 
+% charge in the plates (electrodes). 
