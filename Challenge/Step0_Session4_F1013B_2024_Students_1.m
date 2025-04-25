@@ -179,3 +179,20 @@ patch('Faces',facesN,'Vertices',vertices2d,'FaceColor',colorN);
 % %Use previous lines as a template, use same aesthetics. 
 
 
+figure;
+hold on
+axis ([xmin xmax ymin ymax])
+xlabel 'x position, mm'
+ylabel 'y position, mm'
+title 'Dielectrophoresis (With gradient)'
+grid on
+% 
+% %Set aesthetics (for E-field plot) using the potential values recently added (just uncomment).
+pcolor(x,y,V')                % Color map of the Voltage
+colormap bone
+
+streamslice(x,y,ExP,EyP,2);
+shading interp;
+colorbar;
+patch('Faces',facesP,'Vertices',vertices2d,'FaceColor',colorP);
+patch('Faces',facesN,'Vertices',vertices2d,'FaceColor',colorN);
