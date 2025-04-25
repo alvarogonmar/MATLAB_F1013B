@@ -116,10 +116,15 @@ plot(xn,yn,'*') % Same but for negative charges
               rxn = xn(k);
               ryn = yn(k);
 
+               % Electric Field
               r3psep = (sqrt((rx-rxp)^2 + (ry-ryp)^2))^3; % Distancia a la carga positiva
               r3nsep = (sqrt((rx - rxn)^2 + (ry - ryn)^2))^3; % Distancia a la carga negativa
 
-              Ex(i, j) = Ex(i, j) + ke * dq * (rx - rxp) / r3nsep;% Componente x de E
+              Ex(i, j) = Ex(i, j) + ke * dq * (rx - rxp) / (r3psep - ke + dq * (rx - rxn)/(r3nsep));% Componente x de E
+              Ey(i, j) = Ey(i, j) + ke * dq * (ry - ryp) / (r3psep - ke + dq * (ry -ryn)/(r3nsep)); % Componente y de E
+               
+                
+              % Electric Potencial
           end
       end
   end
