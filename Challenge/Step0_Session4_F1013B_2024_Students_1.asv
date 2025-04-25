@@ -107,7 +107,7 @@ plot(xn,yn,'*') % Same but for negative charges
  
   for i = 1
       for j = 1
-          for k = 1
+          for k =1
           end
       end
   end
