@@ -213,7 +213,7 @@ Ne = 10;                             % Create a variable to define the No. of er
 
 dt = 0.2;                             % Create a time step variable "dt" in Arbitrary units (use a value of 0.2)
 
-qe = 1;                             % Create a variable "qe" to define the erythrocyte electric charge 
+qe = 1e-6;                             % Create a variable "qe" to define the erythrocyte electric charge 
                                % (equally positives and negatives - why?),
                                % use a value of 1 micro Coulombs.
                          
@@ -222,12 +222,21 @@ qe = 1;                             % Create a variable "qe" to define the eryth
 
 %-------------------------Erythrocytes displacement-----------------------%
 % Initialize the count of healthy and infected erythrocytes
-%healthy=0; infected=0;
+healthy=0; infected=0;
 
 
 
 % (3) Open a for loop that will run over the total number of erythrocytes (Ne) defined by the user, 
 % and within it initialize the erythrocyte position (xe, ye) and velocities (Vx , Vy)... Think about it! :)
+
+for ery = 1:Ne
+    % Iniciar las posiciones x y y y velocidades
+    xe = 0;
+    ye = ymax;
+    Vx = 0;
+    Vy = -i;
+   
+end
  
 % (4) Next, inside this loop and after the initialization referred above, use (define) a while that will 
 % run from the upmost Y-coordinate of the erythrocyte, say "ye", to the bottom-most (down-most)  
