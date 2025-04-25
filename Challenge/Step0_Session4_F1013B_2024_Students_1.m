@@ -93,30 +93,25 @@ hold on
 plot(xn,yn,'*') % Same but for negative charges
 
 
-% %-------Electric field calculation for every XY point (No gradient)-------%
+%-------Electric field calculation for every XY point (No gradient)-------%
 % 
-% % % Initialize potential here
-%  V(?,?)=0;
+% % Initialize potential here
+  V(1:Nx,1:Ny)=0;
 % 
 % % % Initialize electric field components
-%  Ex = zeros(?, ?);  %Where do you want this component to be calculated?
-%  Ey = zeros(?, ?);
-% 
+  Ex = zeros(1:Nx, 1:Ny);  %Where do you want this component to be calculated?
+  Ey = zeros(Nx, Ny);
+ 
 % % % Calculate electric field components
 % %Three nested for loops start here...
-% 
-%  for 
-% 
-% 
-% 
-% 
+ 
+  for 
+ 
+
 % %Some place here you must calculate the E-field components.
 % %Some place you must calculate V(i,j) potential for ith, jth position.
-% 
-% 
-% 
-%  end
-% 
+  end
+ 
 % %Three anidated for loops ends here...
 % 
 % % Calculate the electric field components using the gradient of potential
