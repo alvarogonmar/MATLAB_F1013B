@@ -99,8 +99,9 @@ plot(xn,yn,'*') % Same but for negative charges
   V(1:Nx,1:Ny)=0;
 % 
 % % % Initialize electric field components
-  Ex = zeros(1:Nx, 1:Ny);  % Where do you want this component to be calculated?
-  Ey = zeros(Nx, Ny);
+  % Inicializar componentes del campo eléctrico
+Ex = zeros(Nx, Ny);  % Componente X del campo eléctrico
+Ey = zeros(Nx, Ny);  % Componente Y del campo eléctrico
  
 % % % Calculate electric field components
 % %Three nested for loops start here...
@@ -120,8 +121,8 @@ plot(xn,yn,'*') % Same but for negative charges
               r3psep = (sqrt((rx-rxp)^2 + (ry-ryp)^2))^3; % Distancia a la carga positiva
               r3nsep = (sqrt((rx - rxn)^2 + (ry - ryn)^2))^3; % Distancia a la carga negativa
 
-              Ex(i, j) = Ex(i, j) + ke * dq * (rx - rxp) / (r3psep - ke + dq * (rx - rxn)/(r3nsep));% Componente x de E
-              Ey(i, j) = Ey(i, j) + ke * dq * (ry - ryp) / (r3psep - ke + dq * (ry -ryn)/(r3nsep)); % Componente y de E
+              Ex(i, j) = Ex(i, j) + ke * dq * (rx - rxp) / r3psep - ke * dq * (rx - rxn)/r3nsep;% Componente x de E
+              Ey(i, j) = Ey(i, j) + ke * dq * (ry - ryp) / r3psep - ke * dq * (ry -ryn)/r3nsep; % Componente y de E
                
                 
               % Electric Potencial
@@ -150,30 +151,30 @@ ExP = -ExP;
 EyP = -EyP;
 % 
 % % 
-% hold on
-% axis ([xmin xmax ymin ymax])
-% xlabel 'x position, mm'
-% ylabel 'y position, mm'
-% title 'Dielectrophoresis (No gradient)'
-% grid on
+hold on
+axis ([xmin xmax ymin ymax])
+xlabel 'x position, mm'
+ylabel 'y position, mm'
+title 'Dielectrophoresis (No gradient)'
+grid on
 % 
 % %Set aesthetics (for E-field plot) using the potential values recently added (just uncomment).
-% %pcolor(x,y,V')                % Color map of the Voltage
-% %colormap bone                 % Color
+pcolor(x,y,V')                % Color map of the Voltage
+colormap bone                 % Color
 % 
 % 
 % %Use here the streamslice command to plot you calculated E-field...
-% streamslice(?,?,?,?,?)  % Electric field lines without gradient 
+streamslice(x,y,Ex',Ey',2);  % Electric field lines without gradient 
 %                         % Why do we need Ex' and Ey' instead of Ex and Ey?
 % 
 % %Uncomment and comment (what are these new lines for?)
-% %shading interp;
-% %colorbar
+shading interp;
+colorbar;
 % 
-% % 
-% patch('Faces',facesP,'Vertices',vertices2d,'FaceColor',colorP);
-% patch('Faces',facesN,'Vertices',vertices2d,'FaceColor',colorN);
-% 
+
+patch('Faces',facesP,'Vertices',vertices2d,'FaceColor',colorP);
+patch('Faces',facesN,'Vertices',vertices2d,'FaceColor',colorN);
+ 
 % %%%-- Plot here now the E-Field using the gradient --%%%
 % %Use previous lines as a template, use same aesthetics. 
 
