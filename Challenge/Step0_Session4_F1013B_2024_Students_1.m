@@ -79,8 +79,8 @@ dq=Q/Nq;                     % Charge differential magnitude
 % Define the positions of the charges
 yp=linspace(-(1-p)*Lp/2,(1-p)*Lp/2,Nq); % Positive charges Y positions, colorcar las cargas sobre las placas
 xp(1:Nq)=-d/2-t/2;                      % Positive charges X positions
-yn=                                     % Negative charges Y positions
-xn(?:?)=                                % Negative charges X positions
+yn=linspace(-(1-p)*Ln/2,(1-p)*Ln/2,Nq);  % Negative charges Y positions
+xn(1:Nq)= d/2+t/2;                                % Negative charges X positions
 
 %Uncomment and complete the following template code to find out if
 %you are placing you charges correctly. Additionally, play with some of the
@@ -88,68 +88,68 @@ xn(?:?)=                                % Negative charges X positions
 %between your plates. Finally, change the lenght of your plates, and see if
 %your code responds accordingly.
 
-%plot(<vector of positive charges X positions>, <vector of positive charges Y positions>,'*')
-%hold on
-%plot(?,?,'*') Same but for negative charges
-
-
-%-------Electric field calculation for every XY point (No gradient)-------%
-
-% % Initialize potential here
- V(?,?)=0;
-
-% % Initialize electric field components
- Ex = zeros(?, ?);  %Where do you want this component to be calculated?
- Ey = zeros(?, ?);
- 
-% % Calculate electric field components
-%Three nested for loops start here...
-
- for 
-
-
-
-
-%Some place here you must calculate the E-field components.
-%Some place you must calculate V(i,j) potential for ith, jth position.
-
-
-
- end
-
-%Three anidated for loops ends here...
-
-% Calculate the electric field components using the gradient of potential
-% here
-
-[?, ?] = gradient(V'); %Why do we need V' instead of V? 
-
-% 
+plot(xp,yp,'*')
 hold on
-axis ([xmin xmax ymin ymax])
-xlabel 'x position, mm'
-ylabel 'y position, mm'
-title 'Dielectrophoresis (No gradient)'
-grid on
-
-%Set aesthetics (for E-field plot) using the potential values recently added (just uncomment).
-%pcolor(x,y,V')                % Color map of the Voltage
-%colormap bone                 % Color
+plot(xn,yn,'*') % Same but for negative charges
 
 
-%Use here the streamslice command to plot you calculated E-field...
-streamslice(?,?,?,?,?)  % Electric field lines without gradient 
-                        % Why do we need Ex' and Ey' instead of Ex and Ey?
-
-%Uncomment and comment (what are these new lines for?)
-%shading interp;
-%colorbar
-
+% %-------Electric field calculation for every XY point (No gradient)-------%
 % 
-patch('Faces',facesP,'Vertices',vertices2d,'FaceColor',colorP);
-patch('Faces',facesN,'Vertices',vertices2d,'FaceColor',colorN);
-
-%%%-- Plot here now the E-Field using the gradient --%%%
-%Use previous lines as a template, use same aesthetics. 
+% % % Initialize potential here
+%  V(?,?)=0;
+% 
+% % % Initialize electric field components
+%  Ex = zeros(?, ?);  %Where do you want this component to be calculated?
+%  Ey = zeros(?, ?);
+% 
+% % % Calculate electric field components
+% %Three nested for loops start here...
+% 
+%  for 
+% 
+% 
+% 
+% 
+% %Some place here you must calculate the E-field components.
+% %Some place you must calculate V(i,j) potential for ith, jth position.
+% 
+% 
+% 
+%  end
+% 
+% %Three anidated for loops ends here...
+% 
+% % Calculate the electric field components using the gradient of potential
+% % here
+% 
+% [?, ?] = gradient(V'); %Why do we need V' instead of V? 
+% 
+% % 
+% hold on
+% axis ([xmin xmax ymin ymax])
+% xlabel 'x position, mm'
+% ylabel 'y position, mm'
+% title 'Dielectrophoresis (No gradient)'
+% grid on
+% 
+% %Set aesthetics (for E-field plot) using the potential values recently added (just uncomment).
+% %pcolor(x,y,V')                % Color map of the Voltage
+% %colormap bone                 % Color
+% 
+% 
+% %Use here the streamslice command to plot you calculated E-field...
+% streamslice(?,?,?,?,?)  % Electric field lines without gradient 
+%                         % Why do we need Ex' and Ey' instead of Ex and Ey?
+% 
+% %Uncomment and comment (what are these new lines for?)
+% %shading interp;
+% %colorbar
+% 
+% % 
+% patch('Faces',facesP,'Vertices',vertices2d,'FaceColor',colorP);
+% patch('Faces',facesN,'Vertices',vertices2d,'FaceColor',colorN);
+% 
+% %%%-- Plot here now the E-Field using the gradient --%%%
+% %Use previous lines as a template, use same aesthetics. 
 
 
