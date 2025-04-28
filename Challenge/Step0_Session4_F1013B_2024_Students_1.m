@@ -284,12 +284,20 @@ for ery = 1:Ne % Para cada erythrocyte
         if ye > ymin + dx
             delete(head);  % Remove the current visual representation of the erythrocyte
         end
-        if xe<0.07
-            healthy = 
-        end
+    end
+    if xe<0.07
+        healthy=healthy+1;
+    else
+        infected=infected+1;
     end
    
 end
+% Calculates what?
+infected_probability = 100*infected/(healthy+infected);
+
+% Creates what?
+str = ['Infected probability of  ', num2str(infected_probability), ' %'];
+annotation('textbox', [0.15, 0.8, 0.1, 0.1], 'String', str, 'FitBoxToText', 'on');
  
 % (4) Next, inside this loop and after the initialization referred above, use (define) a while that will 
 % run from the upmost Y-coordinate of the erythrocyte, say "ye", to the bottom-most (down-most)  
