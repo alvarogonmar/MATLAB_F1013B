@@ -255,7 +255,7 @@ for ery = 1:Ne % Para cada erythrocyte
 
         for k = 1:Nq % para cada carga
             % Calculate the distances from the erythrocyte
-            rnp= sqrt((xe-dx-xp(k)^2 + (ye-yp(k))^2)); % Carga positiva al ery
+            rnp
             disp(ye);
         end
         % Check if the erythrocyte is still within the valid Y range

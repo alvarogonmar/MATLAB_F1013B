@@ -209,13 +209,12 @@ h = 0.12; % Define the characteristics of the erythrocytes
 
 rad=(xmax - xmin)/50;  % Define the erythrocyte radius as a fraction of the x space scale.
 
-Ne = 10;                             %  No. of erythrocytes to be modelled.
+Ne = 10;                             % Create a variable to define the No. of erythrocytes to be modelled.
 
-dt = 0.2;                             % time step variable "dt" in Arbitrary units (use a value of 0.2)
+dt = 0.2;                             % Create a time step variable "dt" in Arbitrary units (use a value of 0.2)
 
 qe = 1e-6;                             % Create a variable "qe" to define the erythrocyte electric charge 
                                % (equally positives and negatives - why?),
-                               % La misma cantidad qe, la carga neta del erythrocyte es 0
                                % use a value of 1 micro Coulombs.
                          
                             
@@ -225,116 +224,68 @@ qe = 1e-6;                             % Create a variable "qe" to define the er
 % Initialize the count of healthy and infected erythrocytes
 healthy=0; infected=0;
 
-
-
 % (3) Open a for loop that will run over the total number of erythrocytes (Ne) defined by the user, 
 % and within it initialize the erythrocyte position (xe, ye) and velocities (Vx , Vy)... Think about it! :)
 
-for ery = 1:Ne % Para cada erythrocyte
-     path=animatedline('lineWidth',2,'lineStyle',':', 'color','y');
-     dx = h * rand() * rad;  % Random displacement factor based on radius and parameter h
-     fprintf('Erythrocyte: %d has an associated displacement of: %f\n', ery, dx);
+for ery = 1:Ne
+    % (Step2 - Parte 1) Define a variable called path using animatedline
+    path = animatedline('LineWidth',2,'LineStyle',':', 'Color','y'); % Traza la trayectoria del eritrocito
+    
+    % (Step2 - Parte 1) Introduce randomness to the erythrocyte's motion
+    dx = h * rand() * rad;  % Desplazamiento aleatorio basado en el radio y parámetro h
+    % Esto simula que cada eritrocito experimenta un pequeño "salto aleatorio" lateral
+    fprintf('Erythrocyte: %d has an associated displacement of: %f\n', ery, dx);
 
     % Iniciar las posiciones x y y y velocidades
-    xe = 0; % Al iniciar, la posicion es 0
-    ye = ymax; % Caer desde la altura maxima
+    xe = 0;
+    ye = ymax;
     Vx = 0;
-    Vy = -1; % Esta negativo porque va hacia abajo
+    Vy = -1;
     
-    % i = 0;
-    while ye>ymin + dx % cada posicion en y
-        addpoints(path,xe,ye);
-        head = scatter(xe,ye,100,"filled","o","red");
-        drawnow
-        % Force calculation
-        % Initialize electric force
-        Fx = 0; % Siempre la componente en y es 0, entonces la fuerza solo va en direccion x
-        % ye = y(Ny - i);
-        % i = i + 1;
-        % disp(ye)
+    % (Step2 - Parte 2) Open while loop: mientras esté por encima de ymin
+    while ye > ymin
+        % Dibujar el movimiento del eritrocito en tiempo real
+        addpoints(path, xe, ye); % Agrega el punto actual (xe, ye) a la trayectoria
+        head = scatter(xe, ye, 100, 'filled', 'o', 'red'); % Representa la posición actual del eritrocito
+        drawnow; % Actualiza el dibujo inmediatamente
+        
+        %--------------Force calculation-------------------%
+        % (Step2 - Parte 2) Inicializar las componentes de la fuerza eléctrica
+        Fx = 0;  % Componente X de la fuerza
+        Fy = 0;  % Componente Y de la fuerza
 
-        for k = 1:Nq % para cada carga
-            % Calculate the distances from the erythrocyte
-            rnp= sqrt((xe-dx-xp(k)^2 + (ye-yp(k))^2)); % Carga positiva al ery
-            disp(ye);
+        % (Dentro del while, abre un for para recorrer todas las cargas)
+        for k = 1:Nq
+            % Calcula las fuerzas de Coulomb desde cada carga positiva
+            rxp = xp(k);  % X de la carga positiva
+            ryp = yp(k);  % Y de la carga positiva
+            r = sqrt((xe - rxp)^2 + (ye - ryp)^2); % Distancia a la carga positiva
+            Fx = Fx + qe * ke * (xe - rxp) / r^3;  % Fuerza en X positiva
+            Fy = Fy + qe * ke * (ye - ryp) / r^3;  % Fuerza en Y positiva
+
+            % Calcula las fuerzas de Coulomb desde cada carga negativa
+            rxn = xn(k);  % X de la carga negativa
+            ryn = yn(k);  % Y de la carga negativa
+            r = sqrt((xe - rxn)^2 + (ye - ryn)^2); % Distancia a la carga negativa
+            Fx = Fx - qe * ke * (xe - rxn) / r^3;  % Fuerza en X negativa
+            Fy = Fy - qe * ke * (ye - ryn) / r^3;  % Fuerza en Y negativa
         end
-        % Check if the erythrocyte is still within the valid Y range
+
+        % Actualizar velocidad y posición del eritrocito
+        %----------------------Dynamics update----------------------%
+        % Mass is assumed to be 1 kg
+        ax = Fx;  % Acceleration in x
+        ay = Fy;  % Acceleration in y
+        
+        Vx = Vx + Fx * dt;  % Velocidad en X
+        Vy = Vy + Fy * dt;  % Velocidad en Y
+        xe = xe + Vx * dt;  % Posición en X
+        ye = ye + Vy * dt;  % Posición en Y
+        
+        % (Step2 - Parte 3) Después del for que recorre las cargas
+        % Verificar si sigue arriba de ymin + dx
         if ye > ymin + dx
-            delete(head);  % Remove the current visual representation of the erythrocyte
+            delete(head); % Borra el punto anterior para no saturar la gráfica
         end
-    end
-   
-end
- 
-% (4) Next, inside this loop and after the initialization referred above, use (define) a while that will 
-% run from the upmost Y-coordinate of the erythrocyte, say "ye", to the bottom-most (down-most)  
-% Y-coordinate of the erythrocyte (say "ye>ymin"). 
-% 
-% (5)Finally, inside this while open another for loop that will run from charge 1 all the way to the last 
-% charge in the plates (electrodes).
-
-%% Step 2
-
-%TO-DO%
-
-% (1) Inside the for loop that will run over the total number of
-% erythrocytes (Ne), define a variable called path, using the
-% "animatedline" Matlab's command.
-
- %path=animatedline(...);
- path=animatedline('lineWidth',2,'lineStyle',':', 'color','y');
- 
-% Within this same loop, copy (before the erythrocyte position and velocities initialization) and 
-% figure out what the next code is for!
-
-% Introduce randomness to the erythrocyte's motion
-dx = h * rand() * rad;  % Random displacement factor based on radius and parameter h
-fprintf('Erythrocyte: %d has an associated displacement of: %f\n', ery, dx);
-
-% (2) Inside the while loop that will run from the upmost Y-coordinate of the erythrocyte, say "ye", 
-% to the bottom-most (down-most) Y-coordinate of the erythrocyte (say "ye>ymin"), add the following code 
-% for and comment what it is for. Additionally, initialize a variable "Fx" to calculate the x-component 
-% of the electric Coulombian force experienced by the blood cell.
-
-while ye > ymin
-    % Draw the erythrocyte's motion in real-time
-    addpoints(path, xe, ye);  % Add the current position of the erythrocyte to its path
-    head = scatter(xe, ye, 100, 'filled', 'o', 'red');  % Visualize the erythrocyte's current position
-    drawnow;
-
-    %--------------Force calculation-------------------%
-    % Initialize electric force components
-    Fx = 0;  % X-component of force
-    Fy = 0;  % Y-component of force
-
-    for k = 1:Nq
-        % Calculate Coulombian forces from plate charges to the erythrocyte
-        rxp = xp(k);  % X-position of positive charge
-        ryp = yp(k);  % Y-position of positive charge
-        r = sqrt((xe - rxp)^2 + (ye - ryp)^2);  % Distance to positive charge
-        Fx = Fx + qe * ke * (xe - rxp) / r^3;  % Force in X due to positive charge
-        Fy = Fy + qe * ke * (ye - ryp) / r^3;  % Force in Y due to positive charge
-
-        % Negative charges
-        rxn = xn(k);  % X-position of negative charge
-        ryn = yn(k);  % Y-position of negative charge
-        r = sqrt((xe - rxn)^2 + (ye - ryn)^2);  % Distance to negative charge
-        Fx = Fx - qe * ke * (xe - rxn) / r^3;  % Force in X due to negative charge
-        Fy = Fy - qe * ke * (ye - ryn) / r^3;  % Force in Y due to negative charge
-    end
-
-    % Update erythrocyte velocity and position
-    Vx = Vx + Fx * dt;  % Update velocity in X
-    Vy = Vy + Fy * dt;  % Update velocity in Y
-    xe = xe + Vx * dt;  % Update position in X
-    ye = ye + Vy * dt;  % Update position in Y
-
-    % (3)Finally, also inside the while loop, but after opening and closing the for loop that will run 
-    % from charge 1 all the way to the last charge in the plates (electrodes), add the following code, 
-    % and as before, comment, comment, comment!
-
-    % Check if the erythrocyte is still within the valid Y range
-    if ye > ymin + dx
-        delete(head);  % Remove the current visual representation of the erythrocyte
     end
 end
