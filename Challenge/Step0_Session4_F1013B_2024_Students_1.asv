@@ -255,12 +255,37 @@ for ery = 1:Ne % Para cada erythrocyte
 
         for k = 1:Nq % para cada carga
             % Calculate the distances from the erythrocyte
-            rnp
-            disp(ye);
+            % Lado izquierdo <-
+            rnp= sqrt((xe-dx-xp(k)^2 + (ye-yp(k))^2)); % Carga positiva al ery
+            % que pasaria si el dx seria muy chiquito o 0
+            rnn = sqrt((xe-dx-xn(k)^2 + (ye-yn(k))^2));
+
+            % Lado derecho ->
+            rpp= sqrt((xe+dx-xp(k)^2 + (ye-yp(k))^2));
+            rpn = sqrt((xe+dx-xn(k)^2 + (ye-yn(k))^2));
+
+            % Calculate the force magnitud
+            Fpp = -ke*dq*qe/(rpp^3);
+            Fpn = -ke*dq*qe/(rpn^3);
+            Fnn= ke*dq*qe/(rnn^3);
+            Fnp= ke*dq*qe/(rnp^3);
+            
+            Fx = Fx + Fpn*(xe+dx-xn(k)) + Fpp*(xe+dx-xp(k)) + Fnn*(xe-dx-xn(k)) + Fnp*(xe-dx-xp(k));
+
         end
+
+        % Calculate the nrw position of the ery assuming mass = 1
+        a = Fx/1;
+        Vx = Vx +a*dt;
+        xe = xe + Vx*dt+0.5*a*dt^2;
+        ye= ye+dt*Vy;
+        
         % Check if the erythrocyte is still within the valid Y range
         if ye > ymin + dx
             delete(head);  % Remove the current visual representation of the erythrocyte
+        end
+        if xe<0.07
+            healthy = 
         end
     end
    
@@ -272,69 +297,3 @@ end
 % 
 % (5)Finally, inside this while open another for loop that will run from charge 1 all the way to the last 
 % charge in the plates (electrodes).
-
-%% Step 2
-
-%TO-DO%
-
-% (1) Inside the for loop that will run over the total number of
-% erythrocytes (Ne), define a variable called path, using the
-% "animatedline" Matlab's command.
-
- %path=animatedline(...);
- path=animatedline('lineWidth',2,'lineStyle',':', 'color','y');
- 
-% Within this same loop, copy (before the erythrocyte position and velocities initialization) and 
-% figure out what the next code is for!
-
-% Introduce randomness to the erythrocyte's motion
-dx = h * rand() * rad;  % Random displacement factor based on radius and parameter h
-fprintf('Erythrocyte: %d has an associated displacement of: %f\n', ery, dx);
-
-% (2) Inside the while loop that will run from the upmost Y-coordinate of the erythrocyte, say "ye", 
-% to the bottom-most (down-most) Y-coordinate of the erythrocyte (say "ye>ymin"), add the following code 
-% for and comment what it is for. Additionally, initialize a variable "Fx" to calculate the x-component 
-% of the electric Coulombian force experienced by the blood cell.
-
-while ye > ymin
-    % Draw the erythrocyte's motion in real-time
-    addpoints(path, xe, ye);  % Add the current position of the erythrocyte to its path
-    head = scatter(xe, ye, 100, 'filled', 'o', 'red');  % Visualize the erythrocyte's current position
-    drawnow;
-
-    %--------------Force calculation-------------------%
-    % Initialize electric force components
-    Fx = 0;  % X-component of force
-    Fy = 0;  % Y-component of force
-
-    for k = 1:Nq
-        % Calculate Coulombian forces from plate charges to the erythrocyte
-        rxp = xp(k);  % X-position of positive charge
-        ryp = yp(k);  % Y-position of positive charge
-        r = sqrt((xe - rxp)^2 + (ye - ryp)^2);  % Distance to positive charge
-        Fx = Fx + qe * ke * (xe - rxp) / r^3;  % Force in X due to positive charge
-        Fy = Fy + qe * ke * (ye - ryp) / r^3;  % Force in Y due to positive charge
-
-        % Negative charges
-        rxn = xn(k);  % X-position of negative charge
-        ryn = yn(k);  % Y-position of negative charge
-        r = sqrt((xe - rxn)^2 + (ye - ryn)^2);  % Distance to negative charge
-        Fx = Fx - qe * ke * (xe - rxn) / r^3;  % Force in X due to negative charge
-        Fy = Fy - qe * ke * (ye - ryn) / r^3;  % Force in Y due to negative charge
-    end
-
-    % Update erythrocyte velocity and position
-    Vx = Vx + Fx * dt;  % Update velocity in X
-    Vy = Vy + Fy * dt;  % Update velocity in Y
-    xe = xe + Vx * dt;  % Update position in X
-    ye = ye + Vy * dt;  % Update position in Y
-
-    % (3)Finally, also inside the while loop, but after opening and closing the for loop that will run 
-    % from charge 1 all the way to the last charge in the plates (electrodes), add the following code, 
-    % and as before, comment, comment, comment!
-
-    % Check if the erythrocyte is still within the valid Y range
-    if ye > ymin + dx
-        delete(head);  % Remove the current visual representation of the erythrocyte
-    end
-end
