@@ -264,6 +264,9 @@ for ery = 1:Ne % Para cada erythrocyte
             rpp= sqrt((xe+dx-xp(k)^2 + (ye-yp(k))^2));
             rpn = sqrt((xe+dx-xn(k)^2 + (ye-yn(k))^2));
 
+            % Calculate the force magnitud
+            Fpp = -ke*dq*qe/rpp^3;
+
         end
         % Check if the erythrocyte is still within the valid Y range
         if ye > ymin + dx
