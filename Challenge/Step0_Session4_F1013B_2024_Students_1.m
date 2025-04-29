@@ -201,7 +201,7 @@ patch('Faces',facesN,'Vertices',vertices2d,'FaceColor',colorN);
 %% Step 1
 
 %-------------------------Erythrocytes configuration----------------------%
-h = 0.12; % Define the characteristics of the erythrocytes
+h = 0.0012; % Define the characteristics of the erythrocytes
 
 %                                 % Define an adjustable parameter (biology enters here) using the letter "h". Consider that 
                                    % h<0.03 will be associated with healthy blood and h>0.2 with infected blood 
@@ -256,13 +256,14 @@ for ery = 1:Ne % Para cada erythrocyte
         for k = 1:Nq % para cada carga
             % Calculate the distances from the erythrocyte
             % Lado izquierdo <-
-            rnp= sqrt((xe-dx-xp(k)^2 + (ye-yp(k))^2)); % Carga positiva al ery
+            rnp = sqrt((xe - dx - xp(k))^2 + (ye - yp(k))^2); % Carga positiva al ery
             % que pasaria si el dx seria muy chiquito o 0
-            rnn = sqrt((xe-dx-xn(k)^2 + (ye-yn(k))^2));
+            rnn = sqrt((xe - dx - xn(k))^2 + (ye - yn(k))^2);
 
             % Lado derecho ->
-            rpp= sqrt((xe+dx-xp(k)^2 + (ye-yp(k))^2));
-            rpn = sqrt((xe+dx-xn(k)^2 + (ye-yn(k))^2));
+            rpp = sqrt((xe + dx - xp(k))^2 + (ye - yp(k))^2);
+            rpn = sqrt((xe + dx - xn(k))^2 + (ye - yn(k))^2);
+
 
             % Calculate the force magnitud
             Fpp = -ke*dq*qe/(rpp^3);
