@@ -31,9 +31,9 @@ d=0.4;                       % Distancia entre placas
 p=0.01;                      % Distancia minima entre las cargas
 
 % Define the characteristics of the electrodes
-ke=1/(4*pi*8.85*10^-12);     % Constante del campo electrico
+ke=1/(4*pi*8.85*10^-12);     % Constante del Coulomb (N·m²/C²).
 Q=1e-3;                      % Carga electrica en Coulombs
-Nq=28;                       % Numero de cargas
+Nq=28;                       % Numero de cargas en cada placa.
 
 %-----------------?------------------%
 
@@ -118,16 +118,19 @@ Ey = zeros(Nx, Ny);  % Componente Y del campo eléctrico
               ryn = yn(k);
 
                % Electric Field
-              r3psep = (sqrt((rx-rxp)^2 + (ry-ryp)^2))^3; % Distancia a la carga positiva
-              r3nsep = (sqrt((rx - rxn)^2 + (ry - ryn)^2))^3; % Distancia a la carga negativa
-
+              r3psep = (sqrt((rx-rxp)^2 + (ry-ryp)^2))^3; % Distancia al cubo de la carga positiva al punto (Ley de Coulomb).
+              r3nsep = (sqrt((rx - rxn)^2 + (ry - ryn)^2))^3;  % Distancia cúbica al punto desde la carga negativa (para el cálculo del campo eléctrico).
+                
+              % Cálculo de la componente x del campo eléctrico en el punto actual de la malla.
               Ex(i, j) = Ex(i, j) + ke * dq * (rx - rxp) / r3psep - ke * dq * (rx - rxn)/r3nsep;% Componente x de E
+              % Cálculo de la componente y del campo eléctrico en el punto actual de la malla
               Ey(i, j) = Ey(i, j) + ke * dq * (ry - ryp) / r3psep - ke * dq * (ry -ryn)/r3nsep; % Componente y de E
                
                 
               % Electric Potencial
               rpsep = (sqrt((rx-rxp)^2 + (ry-ryp)^2)); % Distancia a la carga positiva
               rnsep = (sqrt((rx - rxn)^2 + (ry - ryn)^2));
+              % Suma del potencial eléctrico en el punto actual de la malla.
               V(i, j) = V(i, j) + ke * dq * (1/rpsep - 1/rnsep);
           end
       end
